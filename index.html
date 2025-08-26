@@ -28,6 +28,25 @@ body.dark th, body.dark td { color:white !important; }
 .card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:0.5rem; }
 figcaption { font-weight:bold; color:black; }
 body.dark .card { background:#2c2c2c; color:white; }
+  /* الوضع العادي - النهاري */
+h2, h3 {
+  color: black; /* الكتابة سوداء */
+}
+
+/* الوضع الليلي */
+body.dark h2,
+body.dark h3 {
+  color: white; /* الكتابة بيضاء */
+}
+/* الوضع العادي - النهاري */
+figcaption {
+  color: black; /* الكتابة سوداء في النهار */
+}
+
+/* الوضع الليلي */
+body.dark figcaption {
+  color: white; /* الكتابة بيضاء في الليل */
+}
 </style>
 </head>
 <body>
