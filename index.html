@@ -22,19 +22,594 @@ nav ul { justify-content:center; position:relative; z-index:1; display:flex; ali
 body.dark { background:#1e1e1e; color:white; }
 body.dark table { background:#2c2c2c; }
 body.dark th, body.dark td { color:white !important; }
-/* Cards */
 .card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.2); padding:0.5rem; text-align:center; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
 .card:hover { transform: scale(1.05); box-shadow:0 4px 12px rgba(0,0,0,0.3); }
 .card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:0.5rem; }
 figcaption { font-weight:bold; color:black; }
 body.dark .card { background:#2c2c2c; color:white; }
-/* الوضع العادي - النهاري */
-h2, h3 {
-  color: black; /* الكتابة سوداء */
+h2, h3 { color: black; }
+body.dark h2, body.dark h3 { color: white; }
+figcaption { color: black; }
+body.dark figcaption { color: white; }
+</style>
+</head>
+<body>
+<nav class="container-fluid" style="background:url('Logo cali.png') center/cover no-repeat; width:100%; padding:0.5rem; display:flex; flex-direction:column; align-items:center; position:relative; min-height:110px;">
+  <div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:0;"></div>
+  <div class="logo" style="margin-top:15px; color: #401d1d">
+    <img src="Johan.jpg" alt="شعار"> Workout with Victor
+  </div>
+  <ul>
+    <li><a href="#" onclick="downloadPDF()" style="background:rgba(0,123,255,0.8);color:black">تحميل الجدول</a></li>
+    <li><a href="#" onclick="toggleSuggestions()" style="background:rgba(255,152,0,0.8);color:black">الاقتراحات</a></li>
+    <li><a href="#" onclick="clearTable()" style="background:rgba(229,57,53,0.8);color:black">حذف الجدول</a></li>
+    <li><a href="#exerciseList" style="background:rgba(76,175,80,0.8);color:black">التمارين</a></li>
+    <li><button id="darkModeBtn" onclick="toggleDarkMode()" style="background:rgba(51,51,51,0.8);">🌙</button></li>
+    <li>
+      <select id="langSelect" onchange="changeLanguage()" style="background:rgba(51,51,51,0.8); color:black; font-weight:bold;">
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </li>
+  </ul>
+</nav>
+<section id="suggestions" class="container">
+  <h2 id="suggestionTitle">⚡ اختر مقترح:</h2>
+  <button class="suggestion-btn" id="beginnerBtn" style="background:#4caf50;" onclick="fillTable(1)">مبتدئ</button>
+  <button class="suggestion-btn" id="intermediateBtn" style="background:#2196f3;" onclick="fillTable(2)">متوسط</button>
+  <button class="suggestion-btn" id="advancedBtn" style="background:#ff9800;" onclick="fillTable(3)">متقدم</button>
+  <button class="suggestion-btn" id="proBtn" style="background:#9c27b0;" onclick="fillTable(4)">خرافي</button>
+</section>
+<main class="container">
+<section id="scheduleSection">
+  <h2 id="tableTitle">📅 جدول التمارين</h2>
+  <table id="scheduleTable">
+    <thead>
+      <tr>
+        <th id="thDay">اليوم</th>
+        <th id="thType">نوع التمرين</th>
+        <th id="thExercises">التمارين</th>
+      </tr>
+    </thead>
+    <tbody id="scheduleBody">
+      <!-- يتم ملئ الأيام ديناميكيا بواسطة الجافاسكريبت -->
+    </tbody>
+  </table>
+</section>
+<section class="container">
+  <h2 id="filterTitle">📋 فلتر التمارين</h2>
+  <select id="exerciseFilter" onchange="filterExercises()">
+    <option value="all">الكل</option>
+    <option value="Push">Push</option>
+    <option value="Pull">Pull</option>
+    <option value="Legs">Legs</option>
+    <option value="Core">Core</option>
+    <option value="Full Body">Full Body</option>
+  </select>
+</section>
+<section id="exerciseList" class="container">
+  <h2 id="exListTitle">📋 قائمة التمارين</h2>
+  <div class="grid" id="exerciseGrid" style="display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:1rem;">
+    <!-- كروت التمارين مع ids للترجمة -->
+    <div class="card" data-type="Push" onclick="openModal('Push-ups','Puch-up.png')">
+      <img src="Puch-up.png" alt="Push-ups"><figcaption id="figPushUps">Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Dips','Dips.png')">
+      <img src="dips.png" alt="Dips"><figcaption id="figDips">Dips</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Pull-ups','Pull-up.png')">
+      <img src="Pull-up.png" alt="Pull-ups"><figcaption id="figPullUps">Pull-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Australian Rows','Australian Rows.png')">
+      <img src="Australian Rows.png" alt="Australian Rows"><figcaption id="figAustralianRows">Australian Rows</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Squats','Squats.png')">
+      <img src="Squats.png" alt="Squats"><figcaption id="figSquats">Squats</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Lunges','Lunges.png')">
+      <img src="Lunges.png" alt="Lunges"><figcaption id="figLunges">Lunges</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Pistol Squats','Pistol Squats.jpeg')">
+      <img src="Pistol Squats.jpeg" alt="Pistol Squats"><figcaption id="figPistolSquats">Pistol Squats</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Plank','Plank.png')">
+      <img src="Plank.png" alt="Plank"><figcaption id="figPlank">Plank</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Dragon Flag','Dragon Flag.jpeg')">
+      <img src="Dragon Flag.jpeg" alt="Dragon Flag"><figcaption id="figDragonFlag">Dragon Flag</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Handstand Push-ups','Handstand Push-ups.jpeg')">
+      <img src="Handstand Push-ups.jpeg" alt="Handstand Push-ups"><figcaption id="figHandstandPushUps">Handstand Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Archer Push-ups','Archer Push-ups.jpeg')">
+      <img src="Archer Push-ups.jpeg" alt="Archer Push-ups"><figcaption id="figArcherPushUps">Archer Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('One Arm Push-ups','One Arm Push-ups.jpeg')">
+      <img src="One Arm Push-ups.jpeg" alt="One Arm Push-ups"><figcaption id="figOneArmPushUps">One Arm Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('One Arm Pull-ups','One Arm Pull-ups.jpeg')">
+      <img src="One Arm Pull-ups.jpeg" alt="One Arm Pull-ups"><figcaption id="figOneArmPullUps">One Arm Pull-ups</figcaption>
+    </div>
+    <div class="card" data-type="Full Body" onclick="openModal('Muscle-ups','Muscle-ups.jpeg')">
+      <img src="Muscle-ups.jpeg" alt="Muscle-ups"><figcaption id="figMuscleUps">Muscle-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Planche Push-ups','Planche Push-ups.jpeg')">
+      <img src="Planche Push-ups.jpeg" alt="Planche Push-ups"><figcaption id="figPlanchePushUps">Planche Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Front Lever','Front Lever.jpeg')">
+      <img src="Front Lever.jpeg" alt="Front Lever"><figcaption id="figFrontLever">Front Lever</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Human Flag','Human Flag.jpeg')">
+      <img src="Human Flag.jpeg" alt="Human Flag"><figcaption id="figHumanFlag">Human Flag</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Pike Push-Ups','Pike Push-Ups.jpeg')">
+      <img src="Pike Push-Ups.jpeg" alt="Pike Push-Ups"><figcaption id="figPikePushUps">Pike Push-Ups</figcaption>
+    </div>
+  </div>
+</section>
+<dialog id="exerciseModal">
+  <h3 id="exerciseTitle">تمرين</h3>
+  <img id="exerciseImg" src="" alt="" style="width:100%; border-radius:10px; margin-bottom:1rem;">
+  <div style="text-align:center; margin-bottom:10px;">
+    <button id="addBtn" onclick="addExercise()" style="padding:10px 20px; font-size:16px; margin-bottom:5px;">إضافة للجدول</button>
+    <button id="cancelBtn" onclick="closeModal()" style="padding:10px 20px; font-size:16px;">إلغاء</button>
+  </div>
+  <form class="grid">
+    <label for="daySelect" id="chooseDayLabel">اختر اليوم:</label>
+    <select id="daySelect">
+      <!-- يتم ملئ الأيام ديناميكيا -->
+    </select>
+  </form>
+</dialog>
+<script>
+let selectedExercise = "";
+let currentLang = "ar";
+const logoPath = "Cali logo.webp"; // مسار اللوغو المستخدم
+let logoBase64 = "";
+
+// تحميل اللوغو وتحويله إلى base64 عند بداية الصفحة
+function loadLogoBase64() {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = logoPath;
+    img.onload = function() {
+      // رسم اللوغو دائري وصغير
+      const size = 40; // قطر الدائرة بالبكسل
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2, 0, 2*Math.PI);
+      ctx.closePath();
+      ctx.clip();
+      ctx.globalAlpha = 0.18; // شفافية العلامة المائية
+      // رسم اللوغو في مركز الدائرة
+      ctx.drawImage(img, 0, 0, size, size);
+      ctx.restore();
+      logoBase64 = canvas.toDataURL("image/webp");
+      resolve();
+    };
+    img.onerror = reject;
+  });
 }
 
-/* الوضع الليلي */
-body.dark h2,
+const translations = {
+  ar: {
+    title: "Workout with Victor",
+    download: "تحميل الجدول",
+    suggestions: "الاقتراحات",
+    clear: "حذف الجدول",
+    exList: "التمارين",
+    filter: "📋 فلتر التمارين",
+    all: "الكل",
+    push: "Push",
+    pull: "Pull",
+    legs: "Legs",
+    core: "Core",
+    full: "Full Body",
+    table: "📅 جدول التمارين",
+    add: "إضافة للجدول",
+    cancel: "إلغاء",
+    chooseDay: "اختر اليوم:",
+    beginner: "مبتدئ",
+    intermediate: "متوسط",
+    advanced: "متقدم",
+    pro: "خرافي",
+    suggestionTitle: "⚡ اختر مقترح:",
+    exListTitle: "📋 قائمة التمارين",
+    socialTitle: "تابعنا على مواقع التواصل الاجتماعي للاستفسار او الدعم:",
+    copyright: "جميع الحقوق محفوظة",
+    developer: "Developer: Rahim Vico",
+    days: ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"],
+    thDay: "اليوم",
+    thType: "نوع التمرين",
+    thExercises: "التمارين",
+    exercises: {
+      "Push-ups": "تمارين الضغط",
+      "Dips": "تمارين الديبس",
+      "Pull-ups": "تمارين السحب",
+      "Australian Rows": "تمارين الصف الأسترالي",
+      "Squats": "تمارين القرفصاء",
+      "Lunges": "تمارين الطعنات",
+      "Pistol Squats": "القرفصاء الأحادية",
+      "Plank": "تمرين البلانك",
+      "Dragon Flag": "تنين فلاج",
+      "Handstand Push-ups": "ضغط الوقوف على اليدين",
+      "Archer Push-ups": "ضغط آرتشر",
+      "One Arm Push-ups": "ضغط بذراع واحدة",
+      "One Arm Pull-ups": "سحب بذراع واحدة",
+      "Muscle-ups": "ماسِل أبس",
+      "Planche Push-ups": "ضغط بلانش",
+      "Front Lever": "فرونت ليفر",
+      "Human Flag": "هيومان فلاج",
+      "Pike Push-Ups": "ضغط بايك"
+    }
+  },
+  en: {
+    title: "Workout with Victor",
+    download: "Download Table",
+    suggestions: "Suggestions",
+    clear: "Clear Table",
+    exList: "Exercises",
+    filter: "📋 Exercise Filter",
+    all: "All",
+    push: "Push",
+    pull: "Pull",
+    legs: "Legs",
+    core: "Core",
+    full: "Full Body",
+    table: "📅 Workout Schedule",
+    add: "Add to Table",
+    cancel: "Cancel",
+    chooseDay: "Choose Day:",
+    beginner: "Beginner",
+    intermediate: "Intermediate",
+    advanced: "Advanced",
+    pro: "Pro",
+    suggestionTitle: "⚡ Choose a suggestion:",
+    exListTitle: "📋 Exercise List",
+    socialTitle: "Follow us for support or questions:",
+    copyright: "All rights reserved",
+    developer: "Developer: Rahim Vico",
+    days: ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"],
+    thDay: "Day",
+    thType: "Type",
+    thExercises: "Exercises",
+    exercises: {
+      "Push-ups": "Push-ups",
+      "Dips": "Dips",
+      "Pull-ups": "Pull-ups",
+      "Australian Rows": "Australian Rows",
+      "Squats": "Squats",
+      "Lunges": "Lunges",
+      "Pistol Squats": "Pistol Squats",
+      "Plank": "Plank",
+      "Dragon Flag": "Dragon Flag",
+      "Handstand Push-ups": "Handstand Push-ups",
+      "Archer Push-ups": "Archer Push-ups",
+      "One Arm Push-ups": "One Arm Push-ups",
+      "One Arm Pull-ups": "One Arm Pull-ups",
+      "Muscle-ups": "Muscle-ups",
+      "Planche Push-ups": "Planche Push-ups",
+      "Front Lever": "Front Lever",
+      "Human Flag": "Human Flag",
+      "Pike Push-Ups": "Pike Push-Ups"
+    }
+  },
+  fr: {
+    title: "Workout avec Victor",
+    download: "Télécharger le tableau",
+    suggestions: "Suggestions",
+    clear: "Effacer le tableau",
+    exList: "Exercices",
+    filter: "📋 Filtre d'exercices",
+    all: "Tous",
+    push: "Push",
+    pull: "Pull",
+    legs: "Jambes",
+    core: "Core",
+    full: "Tout le corps",
+    table: "📅 Planning d'entraînement",
+    add: "Ajouter au tableau",
+    cancel: "Annuler",
+    chooseDay: "Choisir le jour :",
+    beginner: "Débutant",
+    intermediate: "Intermédiaire",
+    advanced: "Avancé",
+    pro: "Pro",
+    suggestionTitle: "⚡ Choisissez une suggestion :",
+    exListTitle: "📋 Liste des exercices",
+    socialTitle: "Suivez-nous pour des questions ou du support :",
+    copyright: "Tous droits réservés",
+    developer: "Développeur : Rahim Vico",
+    days: ["Samedi","Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi"],
+    thDay: "Jour",
+    thType: "Type",
+    thExercises: "Exercices",
+    exercises: {
+      "Push-ups": "Pompes",
+      "Dips": "Dips",
+      "Pull-ups": "Tractions",
+      "Australian Rows": "Rowing Australien",
+      "Squats": "Squats",
+      "Lunges": "Fentes",
+      "Pistol Squats": "Squats Pistol",
+      "Plank": "Gainage",
+      "Dragon Flag": "Dragon Flag",
+      "Handstand Push-ups": "Pompes en équilibre",
+      "Archer Push-ups": "Pompes Archer",
+      "One Arm Push-ups": "Pompes à un bras",
+      "One Arm Pull-ups": "Tractions à un bras",
+      "Muscle-ups": "Muscle-ups",
+      "Planche Push-ups": "Pompes Planche",
+      "Front Lever": "Front Lever",
+      "Human Flag": "Human Flag",
+      "Pike Push-Ups": "Pompes Pike"
+    }
+  }
+};
+
+function renderSchedule() {
+  const tbody = document.getElementById("scheduleBody");
+  tbody.innerHTML = "";
+  const days = translations[currentLang].days;
+  days.forEach(day => {
+    tbody.innerHTML += `<tr><td>${day}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
+  });
+}
+function renderDayOptions() {
+  const select = document.getElementById("daySelect");
+  select.innerHTML = "";
+  translations[currentLang].days.forEach(day => {
+    select.innerHTML += `<option value="${day}">${day}</option>`;
+  });
+}
+function renderExerciseNames() {
+  const ex = translations[currentLang].exercises;
+  document.getElementById("figPushUps").textContent = ex["Push-ups"];
+  document.getElementById("figDips").textContent = ex["Dips"];
+  document.getElementById("figPullUps").textContent = ex["Pull-ups"];
+  document.getElementById("figAustralianRows").textContent = ex["Australian Rows"];
+  document.getElementById("figSquats").textContent = ex["Squats"];
+  document.getElementById("figLunges").textContent = ex["Lunges"];
+  document.getElementById("figPistolSquats").textContent = ex["Pistol Squats"];
+  document.getElementById("figPlank").textContent = ex["Plank"];
+  document.getElementById("figDragonFlag").textContent = ex["Dragon Flag"];
+  document.getElementById("figHandstandPushUps").textContent = ex["Handstand Push-ups"];
+  document.getElementById("figArcherPushUps").textContent = ex["Archer Push-ups"];
+  document.getElementById("figOneArmPushUps").textContent = ex["One Arm Push-ups"];
+  document.getElementById("figOneArmPullUps").textContent = ex["One Arm Pull-ups"];
+  document.getElementById("figMuscleUps").textContent = ex["Muscle-ups"];
+  document.getElementById("figPlanchePushUps").textContent = ex["Planche Push-ups"];
+  document.getElementById("figFrontLever").textContent = ex["Front Lever"];
+  document.getElementById("figHumanFlag").textContent = ex["Human Flag"];
+  document.getElementById("figPikePushUps").textContent = ex["Pike Push-Ups"];
+}
+function openModal(exerciseName, imgSrc) {
+  selectedExercise = exerciseName;
+  document.getElementById("exerciseTitle").innerText = translations[currentLang].exercises[exerciseName] || exerciseName;
+  document.getElementById("exerciseImg").src = imgSrc;
+  renderDayOptions();
+  document.getElementById("exerciseModal").showModal();
+}
+function closeModal() { document.getElementById("exerciseModal").close(); }
+function filterExercises() {
+  const filter = document.getElementById("exerciseFilter").value;
+  const cards = document.querySelectorAll("#exerciseGrid .card");
+  cards.forEach(card => {
+    card.style.display = (filter === "all" || card.dataset.type === filter) ? "block" : "none";
+  });
+}
+function addExercise() {
+  const day = document.getElementById("daySelect").value;
+  const rows = document.querySelectorAll("#scheduleBody tr");
+  rows.forEach(row => {
+    if(row.cells[0].innerText === day) {
+      row.cells[2].innerText = row.cells[2].innerText === "-" ? (translations[currentLang].exercises[selectedExercise] || selectedExercise) : row.cells[2].innerText + ", " + (translations[currentLang].exercises[selectedExercise] || selectedExercise);
+    }
+  });
+  closeModal();
+}
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+  const btn = document.getElementById("darkModeBtn");
+  btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+}
+function toggleSuggestions() {
+  const section = document.getElementById("suggestions");
+  section.style.display = section.style.display === "none" ? "block" : "none";
+}
+function fillTable(level) {
+  const originalDays = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+  const schedule = {
+    1: { السبت:["Push","Push-ups"], الثلاثاء:["Pull","Australian Rows"], الخميس:["Core","Plank"] },
+    2: { السبت:["Push","Push-ups, Dips"], الاثنين:["Pull","Pull-ups"], الأربعاء:["Legs","Squats, Lunges"], الجمعة:["Core","Plank"] },
+    3: { الأحد:["Push","Archer Push-ups, Dips"], الثلاثاء:["Pull","Muscle-ups"], الخميس:["Legs","Pistol Squats"], السبت:["Core","Dragon Flag"], الجمعة:["Push","Handstand Push-ups"] },
+    4: { السبت:["Push","Planche Push-ups"], الأحد:["Pull","One Arm Pull-ups"], الاثنين:["Legs","Pistol Squats"], الثلاثاء:["Core","Human Flag"], الأربعاء:["Pull","Front Lever"], الخميس:["Push","Pike Push-Ups"], الجمعة:["Full Body","Muscle-ups"] }
+  };
+  const tbody = document.getElementById("scheduleBody");
+  tbody.innerHTML = "";
+  const days = translations[currentLang].days;
+  for (let i = 0; i < days.length; i++) {
+    const arDay = originalDays[i];
+    if(schedule[level][arDay]) {
+      let exText = schedule[level][arDay][1].split(", ").map(e=>translations[currentLang].exercises[e]||e).join(", ");
+      tbody.innerHTML += `<tr><td>${days[i]}</td><td contenteditable="true">${schedule[level][arDay][0]}</td><td contenteditable="true">${exText}</td></tr>`;
+    } else {
+      tbody.innerHTML += `<tr><td>${days[i]}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
+    }
+  }
+}
+function clearTable() {
+  renderSchedule();
+}
+async function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  const t = translations[currentLang];
+  doc.text(t.table, 105, 15, { align:"center" });
+
+  // وضع اللوغو كعلامة مائية دائرية وصغيرة في الأسفل يسار الصفحة
+  if (logoBase64) {
+    // في الأسفل يسار (x=10, y=270 تقريبا)
+    doc.addImage(logoBase64, 'WEBP', 10, 270, 18, 18, '', 'FAST');
+  }
+  doc.autoTable({ html:"#scheduleTable", startY:25, styles:{halign:"center"}, headStyles:{fillColor:[0,123,255]} });
+  doc.save("جدول-التمارين.pdf");
+}
+function changeLanguage() {
+  currentLang = document.getElementById("langSelect").value;
+  const t = translations[currentLang];
+  document.title = t.title;
+  document.querySelector(".logo").innerHTML = `<img src="Johan.jpg" alt="شعار"> ${t.title}`;
+  document.querySelector('nav ul li a[onclick*="downloadPDF"]').textContent = t.download;
+  document.querySelector('nav ul li a[onclick*="toggleSuggestions"]').textContent = t.suggestions;
+  document.querySelector('nav ul li a[onclick*="clearTable"]').textContent = t.clear;
+  document.querySelector('nav ul li a[href="#exerciseList"]').textContent = t.exList;
+  document.getElementById("filterTitle").textContent = t.filter;
+  document.getElementById("exerciseFilter").options[0].text = t.all;
+  document.getElementById("exerciseFilter").options[1].text = t.push;
+  document.getElementById("exerciseFilter").options[2].text = t.pull;
+  document.getElementById("exerciseFilter").options[3].text = t.legs;
+  document.getElementById("exerciseFilter").options[4].text = t.core;
+  document.getElementById("exerciseFilter").options[5].text = t.full;
+  document.getElementById("tableTitle").textContent = t.table;
+  document.getElementById("addBtn").textContent = t.add;
+  document.getElementById("cancelBtn").textContent = t.cancel;
+  document.getElementById("chooseDayLabel").textContent = t.chooseDay;
+  document.getElementById("suggestionTitle").textContent = t.suggestionTitle;
+  document.getElementById("beginnerBtn").textContent = t.beginner;
+  document.getElementById("intermediateBtn").textContent = t.intermediate;
+  document.getElementById("advancedBtn").textContent = t.advanced;
+  document.getElementById("proBtn").textContent = t.pro;
+  document.getElementById("exListTitle").textContent = t.exListTitle;
+  document.querySelector(".footer-content p").textContent = t.socialTitle;
+  document.querySelector(".footer-copyright").innerHTML = `&copy; ${t.copyright} <span id="copyYear"></span> | ${t.developer}`;
+  document.getElementById("thDay").textContent = t.thDay;
+  document.getElementById("thType").textContent = t.thType;
+  document.getElementById("thExercises").textContent = t.thExercises;
+  document.getElementById('copyYear').textContent = new Date().getFullYear();
+  renderSchedule();
+  renderDayOptions();
+  renderExerciseNames();
+}
+window.onload = async () => {
+  await loadLogoBase64();
+  changeLanguage();
+};
+</script>
+<style>
+footer {
+  background: linear-gradient(135deg, #ffffff 0%, #222222 100%);
+  color: #fff;
+  padding: 2rem 0 1rem 0;
+  text-align: center;
+  margin-top: 2rem;
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 0 -2px 8px rgba(64,29,29,0.2);
+  position: relative;
+}
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+}
+.footer-socials a {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  transition: background 0.25s, transform 0.25s;
+  line-height: 42px;
+  vertical-align: middle;
+}
+.footer-socials a:hover {
+  background: rgba(255,255,255,0.28);
+  transform: scale(1.1);
+}
+.footer-socials svg {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  vertical-align: middle;
+}
+.footer-logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.footer-logo img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.footer-copyright {
+  font-size: 0.96rem;
+  color: #e0e0e0;
+  margin-top: 1.2rem;
+  letter-spacing: 0.5px;
+}
+body.dark footer {
+  background: linear-gradient(90deg, #1e1e1e 70%, #332727 100%);
+  color: #fff;
+}
+body.dark .footer-socials a {
+  background: rgba(255,255,255,0.08);
+}
+body.dark .footer-socials a:hover {
+  background: rgba(255,255,255,0.22);
+}
+body.dark .footer-copyright {
+  color: #bdbdbd;
+}
+</style>
+<footer>
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="Cali logo.webp" alt="شعار" />
+      <span>Workout with Victor </span>
+    </div>
+    <p style="color:white">تابعنا على مواقع التواصل الاجتماعي للاستفسار او الدعم:</p>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/rahmoni.rahmoni.7739?igsh=aGJqNTlzdnBlNG1r" title="Instagram"><svg viewBox="0 0 24 24"><path d="M17.77 2H6.23A4.23 4.23 0 0 0 2 6.23v11.54A4.23 4.23 0 0 0 6.23 22h11.54A4.23 4.23 0 0 0 22 17.77V6.23A4.23 4.23 0 0 0 17.77 2zm2.31 15.77a2.32 2.32 0 0 1-2.31 2.31H6.23a2.32 2.32 0 0 1-2.31-2.31V6.23a2.32 2.32 0 0 1 2.31-2.31h11.54a2.32 2.32 0 0 1 2.31 2.31zm-7.08-8.46a5.23 5.23 0 1 0 5.23 5.23 5.23 5.23 0 0 0-5.23-5.23zm0 8.62a3.39 3.39 0 1 1 3.39-3.39 3.39 3.39 0 0 1-3.39 3.39zm5.37-9.04a1.23 1.23 0 1 1-1.23-1.23 1.23 1.23 0 0 1 1.23 1.23z"></path></svg></a>
+      <a href="https://github.com/rahim112006" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.51 2.87 8.34 6.84 9.69.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.36-3.37-1.36-.45-1.19-1.11-1.5-1.11-1.5-.91-.63.07-1.62.07-1.62 1 .07 1.52 1.06 1.52 1.06.89 1.56 2.34 1.11 2.91.85.09-.64.35-1.11.63-1.36-2.22-.25-4.56-1.13-4.56-5a3.9 3.9 0 0 1 1-2.72 3.61 3.61 0 0 1 .1-2.68s.84-.27 2.74 1.03a9.32 9.32 0 0 1 5 0c1.9-1.3 2.74-1.03 2.74-1.03a3.61 3.61 0 0 1 .1 2.68 3.9 3.9 0 0 1 1 2.72c0 3.88-2.34 4.74-4.57 5a1.34 1.34 0 0 1 .38 1c0 .72-.01 1.31-.01 1.49 0 .27.18.58.69.48A10 10 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"></path></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AyB7PxLoT/" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.92V15.89h-2.2V12h2.2V9.8c0-2.18 1.3-3.39 3.28-3.39.95 0 1.94.17 1.94.17v2.13h-1.09c-1.07 0-1.4.66-1.4 1.34V12h2.38l-.38 3.89h-2v6.03A10 10 0 0 0 22 12z"></path></svg></a>
+      <a href="https://t.me/+213658604774" title="Telegram">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10s10-4.48 10-10c0-5.52-4.48-10-10-10zm4.94 7.19l-1.42 6.72c-.11.49-.39.61-.79.38l-2.21-1.63-1.07 1.03c-.12.12-.23.23-.47.23l.17-2.33 4.24-3.83c.19-.16-.04-.26-.3-.18l-5.31 2.04-2.28-.71c-.5-.15-.51-.5.1-.69l8.91-3.07c.41-.15.78.09.65.7z"></path>
+        </svg>
+      </a>
+      <a href="https://wa.me/qr/NKKBA25W5F6ZB1" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.272-.099-.47-.148-.669.15-.198.297-.767.967-.94 1.16-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.058-.173-.297-.018-.457.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.496.099-.198.05-.372-.025-.521-.074-.149-.669-1.613-.916-2.209-.242-.579-.487-.501-.669-.51-.173-.008-.372-.01-.571-.01a1.099 1.099 0 0 0-.8.372c-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.066 2.875 1.216 3.076.149.198 2.102 3.212 5.096 4.38.713.307 1.269.491 1.703.629.715.229 1.367.197 1.881.12.575-.085 1.758-.719 2.006-1.412.248-.694.248-1.289.173-1.412-.074-.124-.272-.198-.57-.347z"></path></svg>
+    </div>
+    <div class="footer-copyright">
+      &copy; جميع الحقوق محفوظة <span id="copyYear"></span> | Developer: Rahim Vico
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById('copyYear').textContent = new Date().getFullYear();
+</script>
+</html>body.dark h2,
 body.dark h3 {
   color: white; /* الكتابة بيضاء */
 }
