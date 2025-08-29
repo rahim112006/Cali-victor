@@ -1,72 +1,39 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Workout with Victor</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    body { background:#f5f5f5; color:black; transition: background 0.5s, color 0.5s; }
-    table { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; margin:1rem 0; }
-    th, td { border:1px solid #ddd; padding:0.8rem; text-align:center; color:black !important; }
-    td { min-width:120px; }
-    #suggestions { display:none; margin-top:1rem; }
-    .suggestion-btn { width:100%; margin-bottom:0.5rem; }
-    nav { text-align:center; position:relative; }
-    nav .logo { font-size:1.3rem; font-weight:bold; color:white; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; position:relative; z-index:1; }
-    nav .logo img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
-    nav ul { justify-content:center; position:relative; z-index:1; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
-    body.dark { background:#1e1e1e; color:white; }
-    body.dark table { background:#2c2c2c; }
-    body.dark th, body.dark td { color:white !important; }
-    .card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.2); padding:0.5rem; text-align:center; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .card:hover { transform: scale(1.05); box-shadow:0 4px 12px rgba(0,0,0,0.3); }
-    .card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:0.5rem; }
-    figcaption { font-weight:bold; color:black; }
-    body.dark .card { background:#2c2c2c; color:white; }
-    h2, h3 { color: black; }
-    body.dark h2, body.dark h3 { color: white; }
-    figcaption { color: black; }
-    body.dark figcaption { color: white; }
-    /* Message Box */
-    #welcomeMsg {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2196f3;
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      z-index: 9999;
-      display: none;
-      font-size: 1.1rem;
-    }
-    /* Drag & Drop for rows */
-    tr.draggable {
-      cursor: grab;
-      background: #e3f2fd;
-    }
-    tr.dragging {
-      opacity: 0.7;
-      background: #90caf9;
-    }
-    /* Modal description */
-    #exerciseDesc {
-      font-size: 1rem;
-      color: #333;
-      margin: 10px 0;
-      text-align: right;
-    }
-    body.dark #exerciseDesc { color: #ddd; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workout with Victor</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<style>
+html { scroll-behavior: smooth; }
+body { background:#f5f5f5; color:black; transition: background 0.5s, color 0.5s; }
+table { width:100%; border-collapse:collapse; background:white; border-radius:10px; overflow:hidden; margin:1rem 0; }
+th, td { border:1px solid #ddd; padding:0.8rem; text-align:center; color:black !important; }
+td { min-width:120px; }
+#suggestions { display:none; margin-top:1rem; }
+.suggestion-btn { width:100%; margin-bottom:0.5rem; }
+nav { text-align:center; position:relative; }
+nav .logo { font-size:1.3rem; font-weight:bold; color:white; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; position:relative; z-index:1; }
+nav .logo img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
+nav ul { justify-content:center; position:relative; z-index:1; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+body.dark { background:#1e1e1e; color:white; }
+body.dark table { background:#2c2c2c; }
+body.dark th, body.dark td { color:white !important; }
+.card { background:white; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.2); padding:0.5rem; text-align:center; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.card:hover { transform: scale(1.05); box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+.card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:0.5rem; }
+figcaption { font-weight:bold; color:black; }
+body.dark .card { background:#2c2c2c; color:white; }
+h2, h3 { color: black; }
+body.dark h2, body.dark h3 { color: white; }
+figcaption { color: black; }
+body.dark figcaption { color: white; }
+</style>
 </head>
 <body>
-<div id="welcomeMsg"></div>
 <nav class="container-fluid" style="background:url('Logo cali.png') center/cover no-repeat; width:100%; padding:0.5rem; display:flex; flex-direction:column; align-items:center; position:relative; min-height:110px;">
   <div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:0;"></div>
   <div class="logo" style="margin-top:15px; color: #401d1d">
@@ -95,217 +62,121 @@
   <button class="suggestion-btn" id="proBtn" style="background:#9c27b0;" onclick="fillTable(4)">خرافي</button>
 </section>
 <main class="container">
-  <section id="scheduleSection">
-    <h2 id="tableTitle">📅 جدول التمارين</h2>
-    <table id="scheduleTable">
-      <thead>
-        <tr>
-          <th id="thDay">اليوم</th>
-          <th id="thType">نوع التمرين</th>
-          <th id="thExercises">التمارين</th>
-        </tr>
-      </thead>
-      <tbody id="scheduleBody">
-        <!-- يتم ملئ الأيام ديناميكيا بواسطة الجافاسكريبت -->
-      </tbody>
-    </table>
-    <small style="color: #607d8b" id="tableHelp"></small>
-  </section>
-  <section class="container">
-    <h2 id="filterTitle">📋 فلتر التمارين</h2>
-    <select id="exerciseFilter" onchange="filterExercises()">
-      <option value="all">الكل</option>
-      <option value="Push">Push</option>
-      <option value="Pull">Pull</option>
-      <option value="Legs">Legs</option>
-      <option value="Core">Core</option>
-      <option value="Full Body">Full Body</option>
+<section id="scheduleSection">
+  <h2 id="tableTitle">📅 جدول التمارين</h2>
+  <table id="scheduleTable">
+    <thead>
+      <tr>
+        <th id="thDay">اليوم</th>
+        <th id="thType">نوع التمرين</th>
+        <th id="thExercises">التمارين</th>
+      </tr>
+    </thead>
+    <tbody id="scheduleBody">
+      <!-- يتم ملئ الأيام ديناميكيا بواسطة الجافاسكريبت -->
+    </tbody>
+  </table>
+</section>
+<section class="container">
+  <h2 id="filterTitle">📋 فلتر التمارين</h2>
+  <select id="exerciseFilter" onchange="filterExercises()">
+    <option value="all">الكل</option>
+    <option value="Push">Push</option>
+    <option value="Pull">Pull</option>
+    <option value="Legs">Legs</option>
+    <option value="Core">Core</option>
+    <option value="Full Body">Full Body</option>
+  </select>
+</section>
+<section id="exerciseList" class="container">
+  <h2 id="exListTitle">📋 قائمة التمارين</h2>
+  <div class="grid" id="exerciseGrid" style="display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:1rem;">
+    <!-- كروت التمارين مع ids للترجمة -->
+    <div class="card" data-type="Push" onclick="openModal('Push-ups','Puch-up.png')">
+      <img src="Puch-up.png" alt="Push-ups"><figcaption id="figPushUps">Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Dips','Dips.png')">
+      <img src="dips.png" alt="Dips"><figcaption id="figDips">Dips</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Pull-ups','Pull-up.png')">
+      <img src="Pull-up.png" alt="Pull-ups"><figcaption id="figPullUps">Pull-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Australian Rows','Australian Rows.png')">
+      <img src="Australian Rows.png" alt="Australian Rows"><figcaption id="figAustralianRows">Australian Rows</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Squats','Squats.png')">
+      <img src="Squats.png" alt="Squats"><figcaption id="figSquats">Squats</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Lunges','Lunges.png')">
+      <img src="Lunges.png" alt="Lunges"><figcaption id="figLunges">Lunges</figcaption>
+    </div>
+    <div class="card" data-type="Legs" onclick="openModal('Pistol Squats','Pistol Squats.jpeg')">
+      <img src="Pistol Squats.jpeg" alt="Pistol Squats"><figcaption id="figPistolSquats">Pistol Squats</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Plank','Plank.png')">
+      <img src="Plank.png" alt="Plank"><figcaption id="figPlank">Plank</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Dragon Flag','Dragon Flag.jpeg')">
+      <img src="Dragon Flag.jpeg" alt="Dragon Flag"><figcaption id="figDragonFlag">Dragon Flag</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Handstand Push-ups','Handstand Push-ups.jpeg')">
+      <img src="Handstand Push-ups.jpeg" alt="Handstand Push-ups"><figcaption id="figHandstandPushUps">Handstand Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Archer Push-ups','Archer Push-ups.jpeg')">
+      <img src="Archer Push-ups.jpeg" alt="Archer Push-ups"><figcaption id="figArcherPushUps">Archer Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('One Arm Push-ups','One Arm Push-ups.jpeg')">
+      <img src="One Arm Push-ups.jpeg" alt="One Arm Push-ups"><figcaption id="figOneArmPushUps">One Arm Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('One Arm Pull-ups','One Arm Pull-ups.jpeg')">
+      <img src="One Arm Pull-ups.jpeg" alt="One Arm Pull-ups"><figcaption id="figOneArmPullUps">One Arm Pull-ups</figcaption>
+    </div>
+    <div class="card" data-type="Full Body" onclick="openModal('Muscle-ups','Muscle-ups.jpeg')">
+      <img src="Muscle-ups.jpeg" alt="Muscle-ups"><figcaption id="figMuscleUps">Muscle-ups</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Planche Push-ups','Planche Push-ups.jpeg')">
+      <img src="Planche Push-ups.jpeg" alt="Planche Push-ups"><figcaption id="figPlanchePushUps">Planche Push-ups</figcaption>
+    </div>
+    <div class="card" data-type="Pull" onclick="openModal('Front Lever','Front Lever.jpeg')">
+      <img src="Front Lever.jpeg" alt="Front Lever"><figcaption id="figFrontLever">Front Lever</figcaption>
+    </div>
+    <div class="card" data-type="Core" onclick="openModal('Human Flag','Human Flag.jpeg')">
+      <img src="Human Flag.jpeg" alt="Human Flag"><figcaption id="figHumanFlag">Human Flag</figcaption>
+    </div>
+    <div class="card" data-type="Push" onclick="openModal('Pike Push-Ups','Pike Push-Ups.jpeg')">
+      <img src="Pike Push-Ups.jpeg" alt="Pike Push-Ups"><figcaption id="figPikePushUps">Pike Push-Ups</figcaption>
+    </div>
+  </div>
+</section>
+<dialog id="exerciseModal">
+  <h3 id="exerciseTitle">تمرين</h3>
+  <img id="exerciseImg" src="" alt="" style="width:100%; border-radius:10px; margin-bottom:1rem;">
+  <div style="text-align:center; margin-bottom:10px;">
+    <button id="addBtn" onclick="addExercise()" style="padding:10px 20px; font-size:16px; margin-bottom:5px;">إضافة للجدول</button>
+    <button id="cancelBtn" onclick="closeModal()" style="padding:10px 20px; font-size:16px;">إلغاء</button>
+  </div>
+  <form class="grid">
+    <label for="daySelect" id="chooseDayLabel">اختر اليوم:</label>
+    <select id="daySelect">
+      <!-- يتم ملئ الأيام ديناميكيا -->
     </select>
-  </section>
-  <section id="exerciseList" class="container">
-    <h2 id="exListTitle">📋 قائمة التمارين</h2>
-    <div class="grid" id="exerciseGrid" style="display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:1rem;">
-      <!-- كروت التمارين مع ids للترجمة -->
-      <!-- سيتم تعبئتها ديناميكيا -->
-    </div>
-  </section>
-  <dialog id="exerciseModal">
-    <h3 id="exerciseTitle">تمرين</h3>
-    <img id="exerciseImg" src="" alt="" style="width:100%; border-radius:10px; margin-bottom:1rem;">
-    <div id="exerciseDesc"></div>
-    <div style="text-align:center; margin-bottom:10px;">
-      <button id="addBtn" onclick="addExercise()" style="padding:10px 20px; font-size:16px; margin-bottom:5px;">إضافة للجدول</button>
-      <button id="cancelBtn" onclick="closeModal()" style="padding:10px 20px; font-size:16px;">إلغاء</button>
-    </div>
-    <form class="grid">
-      <label for="daySelect" id="chooseDayLabel">اختر اليوم:</label>
-      <select id="daySelect">
-        <!-- يتم ملئ الأيام ديناميكيا -->
-      </select>
-    </form>
-  </dialog>
-</main>
+  </form>
+</dialog>
 <script>
 let selectedExercise = "";
 let currentLang = "ar";
-const logoPath = "Cali logo.webp";
+const logoPath = "Cali logo.webp"; // مسار اللوغو المستخدم
 let logoBase64 = "";
-const scheduleStorageKey = "workout_schedule";
-const welcomeStorageKey = "welcome_shown";
-const exerciseDescriptions = {
-  "Push-ups": {
-    ar: "تمرين الضغط هو أساس التمارين المنزلية لتقوية الصدر والكتفين والذراعين.",
-    en: "Push-ups are a fundamental exercise to strengthen chest, shoulders, and arms.",
-    fr: "Les pompes sont un exercice fondamental pour renforcer la poitrine, les épaules et les bras.",
-    yt: ""
-  },
-  "Dips": {
-    ar: "الديبس يقوي عضلات الترايسبس والصدر والكتفين ويعتبر تمرين وزن الجسم فعال جداً.",
-    en: "Dips strengthen triceps, chest, and shoulders and are a very effective bodyweight exercise.",
-    fr: "Les dips renforcent les triceps, la poitrine et les épaules et sont très efficaces.",
-    yt: ""
-  },
-  "Pull-ups": {
-    ar: "السحب هو تمرين أساسي لعضلات الظهر والذراعين ويزيد من قوة القبضة.",
-    en: "Pull-ups are essential for back and arm muscles, and improve grip strength.",
-    fr: "Les tractions sont essentielles pour le dos et les bras, et améliorent la prise.",
-    yt: ""
-  },
-  "Australian Rows": {
-    ar: "صف أسترالي لتقوية الظهر والذراعين، مناسب للمبتدئين والمتوسطين.",
-    en: "Australian Rows strengthen the back and arms, suitable for beginners and intermediates.",
-    fr: "Le rowing australien renforce le dos et les bras, adapté aux débutants.",
-    yt: ""
-  },
-  "Squats": {
-    ar: "القرفصاء يقوي عضلات الساق والمؤخرة، ويحسن التوازن والقوة العامة.",
-    en: "Squats strengthen legs and glutes, improving balance and general strength.",
-    fr: "Les squats renforcent les jambes et les fessiers, et améliorent l’équilibre.",
-    yt: ""
-  },
-  "Lunges": {
-    ar: "الطعنات لعضلات الساق والمؤخرة، وتزيد من التوازن والمرونة.",
-    en: "Lunges target legs and glutes, increasing balance and flexibility.",
-    fr: "Les fentes ciblent les jambes et les fessiers, et augmentent l’équilibre.",
-    yt: ""
-  },
-  "Pistol Squats": {
-    ar: "القرفصاء الأحادية لزيادة القوة والتوازن في الساقين، تمرين متقدم وصعب.",
-    en: "Pistol Squats improve leg strength and balance, an advanced exercise.",
-    fr: "Les squats pistol améliorent la force et l’équilibre, exercice avancé.",
-    yt: ""
-  },
-  "Plank": {
-    ar: "البلانك لتقوية عضلات البطن والظهر، تمرين ثابت فعال.",
-    en: "Plank strengthens core and back muscles, a very effective static exercise.",
-    fr: "Le gainage renforce le tronc et le dos, exercice statique efficace.",
-    yt: ""
-  },
-  "Dragon Flag": {
-    ar: "تنين فلاج تمرين متقدم جداً للبطن والظهر، يحتاج قوة وتحكم عالية.",
-    en: "Dragon Flag is a very advanced core and back exercise, requires high control.",
-    fr: "Le dragon flag est un exercice avancé pour le tronc et le dos, demande du contrôle.",
-    yt: ""
-  },
-  "Handstand Push-ups": {
-    ar: "ضغط اليدين لتقوية الكتفين والعضلات العلوية، يتطلب توازن وقوة.",
-    en: "Handstand Push-ups strengthen shoulders and upper body, require balance and strength.",
-    fr: "Les pompes en équilibre renforcent les épaules et le haut du corps.",
-    yt: ""
-  },
-  "Archer Push-ups": {
-    ar: "ضغط آرتشر لتقوية الصدر والذراعين، مستوى متقدم.",
-    en: "Archer Push-ups target chest and arms, advanced level.",
-    fr: "Les pompes archer ciblent la poitrine et les bras, niveau avancé.",
-    yt: ""
-  },
-  "One Arm Push-ups": {
-    ar: "ضغط بذراع واحدة لتقوية الصدر والذراعين، تمرين صعب جداً.",
-    en: "One Arm Push-ups strengthen chest and arms, very difficult exercise.",
-    fr: "Les pompes à un bras renforcent la poitrine et les bras, exercice difficile.",
-    yt: ""
-  },
-  "One Arm Pull-ups": {
-    ar: "سحب بذراع واحدة لعضلات الظهر والذراع، تمرين خرافي.",
-    en: "One Arm Pull-ups for back and arms, legendary exercise.",
-    fr: "Les tractions à un bras pour le dos et les bras, exercice légendaire.",
-    yt: ""
-  },
-  "Muscle-ups": {
-    ar: "ماسِل أبس تجمع بين السحب والدفع، تمرين كامل للجسم العلوي.",
-    en: "Muscle-ups combine pull and push, a complete upper body exercise.",
-    fr: "Les muscle-ups combinent tirage et poussée, exercice complet.",
-    yt: ""
-  },
-  "Planche Push-ups": {
-    ar: "ضغط بلانش لتقوية الكتف والصدر، مرحلة متقدمة جداً.",
-    en: "Planche Push-ups for shoulders and chest, highly advanced.",
-    fr: "Les pompes planche pour les épaules et la poitrine, très avancé.",
-    yt: ""
-  },
-  "Front Lever": {
-    ar: "فرونت ليفر تمرين خرافي لقوة الظهر والبطن.",
-    en: "Front Lever is a legendary exercise for core and back strength.",
-    fr: "Le front lever est un exercice légendaire pour le tronc et le dos.",
-    yt: ""
-  },
-  "Human Flag": {
-    ar: "هيومان فلاج رمز لقوة الجسم بالكامل وتوازن مذهل.",
-    en: "Human Flag is a symbol of total body strength and impressive balance.",
-    fr: "Le human flag est un symbole de force et d’équilibre.",
-    yt: ""
-  },
-  "Pike Push-Ups": {
-    ar: "ضغط بايك يقوي الأكتاف والجزء العلوي، مناسب للمتوسطين.",
-    en: "Pike Push-Ups strengthen shoulders and upper body, suitable for intermediates.",
-    fr: "Les pompes pike renforcent les épaules et le haut du corps.",
-    yt: ""
-  }
-};
 
-const exerciseCardsData = [
-  { name: "Push-ups", type: "Push", img: "Puch-up.png" },
-  { name: "Dips", type: "Push", img: "dips.png" },
-  { name: "Pull-ups", type: "Pull", img: "Pull-up.png" },
-  { name: "Australian Rows", type: "Pull", img: "Australian Rows.png" },
-  { name: "Squats", type: "Legs", img: "Squats.png" },
-  { name: "Lunges", type: "Legs", img: "Lunges.png" },
-  { name: "Pistol Squats", type: "Legs", img: "Pistol Squats.jpeg" },
-  { name: "Plank", type: "Core", img: "Plank.png" },
-  { name: "Dragon Flag", type: "Core", img: "Dragon Flag.jpeg" },
-  { name: "Handstand Push-ups", type: "Push", img: "Handstand Push-ups.jpeg" },
-  { name: "Archer Push-ups", type: "Push", img: "Archer Push-ups.jpeg" },
-  { name: "One Arm Push-ups", type: "Push", img: "One Arm Push-ups.jpeg" },
-  { name: "One Arm Pull-ups", type: "Pull", img: "One Arm Pull-ups.jpeg" },
-  { name: "Muscle-ups", type: "Full Body", img: "Muscle-ups.jpeg" },
-  { name: "Planche Push-ups", type: "Push", img: "Planche Push-ups.jpeg" },
-  { name: "Front Lever", type: "Pull", img: "Front Lever.jpeg" },
-  { name: "Human Flag", type: "Core", img: "Human Flag.jpeg" },
-  { name: "Pike Push-Ups", type: "Push", img: "Pike Push-Ups.jpeg" }
-];
-
-function showWelcome() {
-  if (!localStorage.getItem(welcomeStorageKey)) {
-    const msg = {
-      ar: "مرحبًا بك! يمكنك حفظ جدولك وسيبقى محفوظًا حتى تغلق الصفحة، جرب جميع الميزات الجديدة!",
-      en: "Welcome! Your schedule will be saved even if you close the page. Try all the new features!",
-      fr: "Bienvenue ! Votre planning reste sauvegardé même si vous fermez la page. Testez toutes les nouveautés !"
-    };
-    const box = document.getElementById('welcomeMsg');
-    box.textContent = msg[currentLang] || msg.ar;
-    box.style.display = "block";
-    setTimeout(() => { box.style.display = "none"; }, 4000);
-    localStorage.setItem(welcomeStorageKey, "1");
-  }
-}
-
+// تحميل اللوغو وتحويله إلى base64 عند بداية الصفحة
 function loadLogoBase64() {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = logoPath;
     img.onload = function() {
-      const size = 40;
+      // رسم اللوغو دائري وصغير
+      const size = 40; // قطر الدائرة بالبكسل
       const canvas = document.createElement("canvas");
       canvas.width = size;
       canvas.height = size;
@@ -315,7 +186,8 @@ function loadLogoBase64() {
       ctx.arc(size/2, size/2, size/2, 0, 2*Math.PI);
       ctx.closePath();
       ctx.clip();
-      ctx.globalAlpha = 0.18;
+      ctx.globalAlpha = 0.18; // شفافية العلامة المائية
+      // رسم اللوغو في مركز الدائرة
       ctx.drawImage(img, 0, 0, size, size);
       ctx.restore();
       logoBase64 = canvas.toDataURL("image/webp");
@@ -356,8 +228,26 @@ const translations = {
     thDay: "اليوم",
     thType: "نوع التمرين",
     thExercises: "التمارين",
-    tableHelp: "يمكنك إعادة ترتيب الأيام بالسحب والإفلات أو تعديل الجدول يدويًا. سيتم حفظ الجدول تلقائيًا.",
-    exercises: Object.fromEntries(exerciseCardsData.map(e => [e.name, exerciseDescriptions[e.name]?.ar || e.name]))
+    exercises: {
+      "Push-ups": "تمارين الضغط",
+      "Dips": "تمارين الديبس",
+      "Pull-ups": "تمارين السحب",
+      "Australian Rows": "تمارين الصف الأسترالي",
+      "Squats": "تمارين القرفصاء",
+      "Lunges": "تمارين الطعنات",
+      "Pistol Squats": "القرفصاء الأحادية",
+      "Plank": "تمرين البلانك",
+      "Dragon Flag": "تنين فلاج",
+      "Handstand Push-ups": "ضغط الوقوف على اليدين",
+      "Archer Push-ups": "ضغط آرتشر",
+      "One Arm Push-ups": "ضغط بذراع واحدة",
+      "One Arm Pull-ups": "سحب بذراع واحدة",
+      "Muscle-ups": "ماسِل أبس",
+      "Planche Push-ups": "ضغط بلانش",
+      "Front Lever": "فرونت ليفر",
+      "Human Flag": "هيومان فلاج",
+      "Pike Push-Ups": "ضغط بايك"
+    }
   },
   en: {
     title: "Workout with Victor",
@@ -389,8 +279,26 @@ const translations = {
     thDay: "Day",
     thType: "Type",
     thExercises: "Exercises",
-    tableHelp: "You can reorder days by dragging and dropping or edit the table manually. The schedule is saved automatically.",
-    exercises: Object.fromEntries(exerciseCardsData.map(e => [e.name, exerciseDescriptions[e.name]?.en || e.name]))
+    exercises: {
+      "Push-ups": "Push-ups",
+      "Dips": "Dips",
+      "Pull-ups": "Pull-ups",
+      "Australian Rows": "Australian Rows",
+      "Squats": "Squats",
+      "Lunges": "Lunges",
+      "Pistol Squats": "Pistol Squats",
+      "Plank": "Plank",
+      "Dragon Flag": "Dragon Flag",
+      "Handstand Push-ups": "Handstand Push-ups",
+      "Archer Push-ups": "Archer Push-ups",
+      "One Arm Push-ups": "One Arm Push-ups",
+      "One Arm Pull-ups": "One Arm Pull-ups",
+      "Muscle-ups": "Muscle-ups",
+      "Planche Push-ups": "Planche Push-ups",
+      "Front Lever": "Front Lever",
+      "Human Flag": "Human Flag",
+      "Pike Push-Ups": "Pike Push-Ups"
+    }
   },
   fr: {
     title: "Workout avec Victor",
@@ -422,51 +330,37 @@ const translations = {
     thDay: "Jour",
     thType: "Type",
     thExercises: "Exercices",
-    tableHelp: "Vous pouvez réorganiser les jours par glisser-déposer ou modifier le tableau. Le planning est sauvegardé automatiquement.",
-    exercises: Object.fromEntries(exerciseCardsData.map(e => [e.name, exerciseDescriptions[e.name]?.fr || e.name]))
+    exercises: {
+      "Push-ups": "Pompes",
+      "Dips": "Dips",
+      "Pull-ups": "Tractions",
+      "Australian Rows": "Rowing Australien",
+      "Squats": "Squats",
+      "Lunges": "Fentes",
+      "Pistol Squats": "Squats Pistol",
+      "Plank": "Gainage",
+      "Dragon Flag": "Dragon Flag",
+      "Handstand Push-ups": "Pompes en équilibre",
+      "Archer Push-ups": "Pompes Archer",
+      "One Arm Push-ups": "Pompes à un bras",
+      "One Arm Pull-ups": "Tractions à un bras",
+      "Muscle-ups": "Muscle-ups",
+      "Planche Push-ups": "Pompes Planche",
+      "Front Lever": "Front Lever",
+      "Human Flag": "Human Flag",
+      "Pike Push-Ups": "Pompes Pike"
+    }
   }
 };
 
-function saveSchedule() {
-  const rows = Array.from(document.querySelectorAll("#scheduleBody tr")).map(row => {
-    return {
-      day: row.cells[0].innerText,
-      type: row.cells[1].innerText,
-      exercises: row.cells[2].innerText
-    };
-  });
-  localStorage.setItem(scheduleStorageKey, JSON.stringify(rows));
-}
-
-function loadSchedule() {
-  const data = localStorage.getItem(scheduleStorageKey);
-  if (!data) return null;
-  try {
-    return JSON.parse(data);
-  } catch { return null; }
-}
-
-// جدول التمارين بديناميكية كاملة وإعادة بناء تلقائي
-function renderSchedule(fromStorage = false) {
+function renderSchedule() {
   const tbody = document.getElementById("scheduleBody");
   tbody.innerHTML = "";
   const days = translations[currentLang].days;
-  let schedule = loadSchedule();
-  if (schedule && fromStorage) {
-    schedule.forEach(row => {
-      tbody.innerHTML += `<tr draggable="true"><td>${row.day}</td><td contenteditable="true">${row.type}</td><td contenteditable="true">${row.exercises}</td></tr>`;
-    });
-  } else {
-    days.forEach(day => {
-      tbody.innerHTML += `<tr draggable="true"><td>${day}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
-    });
-  }
-  document.getElementById("tableHelp").textContent = translations[currentLang].tableHelp;
-  addRowEditListeners();
-  addDragDropListeners();
-  saveSchedule();
+  days.forEach(day => {
+    tbody.innerHTML += `<tr><td>${day}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
+  });
 }
-
 function renderDayOptions() {
   const select = document.getElementById("daySelect");
   select.innerHTML = "";
@@ -474,107 +368,61 @@ function renderDayOptions() {
     select.innerHTML += `<option value="${day}">${day}</option>`;
   });
 }
-
-function renderExerciseCards() {
-  const grid = document.getElementById("exerciseGrid");
-  grid.innerHTML = "";
-  exerciseCardsData.forEach(card => {
-    const exName = translations[currentLang].exercises[card.name] || card.name;
-    grid.innerHTML += `
-      <div class="card" data-type="${card.type}" onclick="openModal('${card.name}','${card.img}')">
-        <img src="${card.img}" alt="${card.name}">
-        <figcaption>${exName}</figcaption>
-      </div>
-    `;
-  });
+function renderExerciseNames() {
+  const ex = translations[currentLang].exercises;
+  document.getElementById("figPushUps").textContent = ex["Push-ups"];
+  document.getElementById("figDips").textContent = ex["Dips"];
+  document.getElementById("figPullUps").textContent = ex["Pull-ups"];
+  document.getElementById("figAustralianRows").textContent = ex["Australian Rows"];
+  document.getElementById("figSquats").textContent = ex["Squats"];
+  document.getElementById("figLunges").textContent = ex["Lunges"];
+  document.getElementById("figPistolSquats").textContent = ex["Pistol Squats"];
+  document.getElementById("figPlank").textContent = ex["Plank"];
+  document.getElementById("figDragonFlag").textContent = ex["Dragon Flag"];
+  document.getElementById("figHandstandPushUps").textContent = ex["Handstand Push-ups"];
+  document.getElementById("figArcherPushUps").textContent = ex["Archer Push-ups"];
+  document.getElementById("figOneArmPushUps").textContent = ex["One Arm Push-ups"];
+  document.getElementById("figOneArmPullUps").textContent = ex["One Arm Pull-ups"];
+  document.getElementById("figMuscleUps").textContent = ex["Muscle-ups"];
+  document.getElementById("figPlanchePushUps").textContent = ex["Planche Push-ups"];
+  document.getElementById("figFrontLever").textContent = ex["Front Lever"];
+  document.getElementById("figHumanFlag").textContent = ex["Human Flag"];
+  document.getElementById("figPikePushUps").textContent = ex["Pike Push-Ups"];
 }
-
 function openModal(exerciseName, imgSrc) {
   selectedExercise = exerciseName;
   document.getElementById("exerciseTitle").innerText = translations[currentLang].exercises[exerciseName] || exerciseName;
   document.getElementById("exerciseImg").src = imgSrc;
   renderDayOptions();
-  // وصف مختصر
-  const descObj = exerciseDescriptions[exerciseName];
-  document.getElementById("exerciseDesc").textContent = descObj ? (descObj[currentLang] || descObj.ar) : "";
-  // فيديو يوتيوب (إن وجد)
-  // if(descObj && descObj.yt) { /* يمكن إضافة iframe هنا */ }
   document.getElementById("exerciseModal").showModal();
 }
-
 function closeModal() { document.getElementById("exerciseModal").close(); }
-
 function filterExercises() {
   const filter = document.getElementById("exerciseFilter").value;
-  document.querySelectorAll("#exerciseGrid .card").forEach(card => {
+  const cards = document.querySelectorAll("#exerciseGrid .card");
+  cards.forEach(card => {
     card.style.display = (filter === "all" || card.dataset.type === filter) ? "block" : "none";
   });
 }
-
 function addExercise() {
   const day = document.getElementById("daySelect").value;
   const rows = document.querySelectorAll("#scheduleBody tr");
   rows.forEach(row => {
     if(row.cells[0].innerText === day) {
-      let currVal = row.cells[2].innerText;
-      let exText = translations[currentLang].exercises[selectedExercise] || selectedExercise;
-      if (!currVal || currVal === "-") {
-        row.cells[2].innerText = exText;
-      } else if (!currVal.split(", ").includes(exText)) {
-        row.cells[2].innerText = currVal + ", " + exText;
-      }
+      row.cells[2].innerText = row.cells[2].innerText === "-" ? (translations[currentLang].exercises[selectedExercise] || selectedExercise) : row.cells[2].innerText + ", " + (translations[currentLang].exercises[selectedExercise] || selectedExercise);
     }
   });
   closeModal();
-  saveSchedule();
 }
-
-// تحقق من صحة الإدخال (لا يسمح بإدخال رموز غير التمارين أو نوع التمرين فارغ)
-function addRowEditListeners() {
-  document.querySelectorAll("#scheduleBody td[contenteditable]").forEach(td => {
-    td.onblur = function() {
-      if (td.cellIndex === 1 && (!td.innerText.trim() || td.innerText.trim() === "-")) {
-        td.innerText = "-";
-      }
-      if (td.cellIndex === 2 && (!td.innerText.trim() || td.innerText.trim() === "-")) {
-        td.innerText = "-";
-      }
-      saveSchedule();
-    };
-    td.onkeydown = function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        td.blur();
-      }
-    };
-  });
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+  const btn = document.getElementById("darkModeBtn");
+  btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 }
-
-// Drag & Drop rows
-function addDragDropListeners() {
-  const tbody = document.getElementById("scheduleBody");
-  let draggedRow = null;
-  tbody.querySelectorAll("tr").forEach(row => {
-    row.classList.add("draggable");
-    row.addEventListener("dragstart", function() {
-      draggedRow = row;
-      row.classList.add("dragging");
-    });
-    row.addEventListener("dragend", function() {
-      row.classList.remove("dragging");
-      draggedRow = null;
-      saveSchedule();
-    });
-    row.addEventListener("dragover", function(e) {
-      e.preventDefault();
-      if (draggedRow && row !== draggedRow) {
-        tbody.insertBefore(draggedRow, row.nextSibling);
-      }
-    });
-  });
+function toggleSuggestions() {
+  const section = document.getElementById("suggestions");
+  section.style.display = section.style.display === "none" ? "block" : "none";
 }
-
-// اقتراحات ديناميكية حسب المستوى
 function fillTable(level) {
   const originalDays = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
   const schedule = {
@@ -590,33 +438,30 @@ function fillTable(level) {
     const arDay = originalDays[i];
     if(schedule[level][arDay]) {
       let exText = schedule[level][arDay][1].split(", ").map(e=>translations[currentLang].exercises[e]||e).join(", ");
-      tbody.innerHTML += `<tr draggable="true"><td>${days[i]}</td><td contenteditable="true">${schedule[level][arDay][0]}</td><td contenteditable="true">${exText}</td></tr>`;
+      tbody.innerHTML += `<tr><td>${days[i]}</td><td contenteditable="true">${schedule[level][arDay][0]}</td><td contenteditable="true">${exText}</td></tr>`;
     } else {
-      tbody.innerHTML += `<tr draggable="true"><td>${days[i]}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
+      tbody.innerHTML += `<tr><td>${days[i]}</td><td contenteditable="true">-</td><td contenteditable="true">-</td></tr>`;
     }
   }
-  addRowEditListeners();
-  addDragDropListeners();
-  saveSchedule();
 }
-
 function clearTable() {
-  renderSchedule(false);
+  renderSchedule();
 }
-
 async function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.setFontSize(14);
   const t = translations[currentLang];
   doc.text(t.table, 105, 15, { align:"center" });
+
+  // وضع اللوغو كعلامة مائية دائرية وصغيرة في الأسفل يسار الصفحة
   if (logoBase64) {
+    // في الأسفل يسار (x=10, y=270 تقريبا)
     doc.addImage(logoBase64, 'WEBP', 10, 270, 18, 18, '', 'FAST');
   }
   doc.autoTable({ html:"#scheduleTable", startY:25, styles:{halign:"center"}, headStyles:{fillColor:[0,123,255]} });
   doc.save("جدول-التمارين.pdf");
 }
-
 function changeLanguage() {
   currentLang = document.getElementById("langSelect").value;
   const t = translations[currentLang];
@@ -649,28 +494,14 @@ function changeLanguage() {
   document.getElementById("thType").textContent = t.thType;
   document.getElementById("thExercises").textContent = t.thExercises;
   document.getElementById('copyYear').textContent = new Date().getFullYear();
-  renderSchedule(true);
+  renderSchedule();
   renderDayOptions();
-  renderExerciseCards();
-  showWelcome();
+  renderExerciseNames();
 }
-
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-  const btn = document.getElementById("darkModeBtn");
-  btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-}
-
-function toggleSuggestions() {
-  const section = document.getElementById("suggestions");
-  section.style.display = section.style.display === "none" ? "block" : "none";
-}
-
 window.onload = async () => {
   await loadLogoBase64();
   changeLanguage();
 };
-
 </script>
 <style>
 footer {
@@ -765,4 +596,17 @@ body.dark .footer-copyright {
       <a href="https://www.facebook.com/share/1AyB7PxLoT/" title="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.92V15.89h-2.2V12h2.2V9.8c0-2.18 1.3-3.39 3.28-3.39.95 0 1.94.17 1.94.17v2.13h-1.09c-1.07 0-1.4.66-1.4 1.34V12h2.38l-.38 3.89h-2v6.03A10 10 0 0 0 22 12z"></path></svg></a>
       <a href="https://t.me/+213658604774" title="Telegram">
         <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10s10-4.48 10-10
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10s10-4.48 10-10c0-5.52-4.48-10-10-10zm4.94 7.19l-1.42 6.72c-.11.49-.39.61-.79.38l-2.21-1.63-1.07 1.03c-.12.12-.23.23-.47.23l.17-2.33 4.24-3.83c.19-.16-.04-.26-.3-.18l-5.31 2.04-2.28-.71c-.5-.15-.51-.5.1-.69l8.91-3.07c.41-.15.78.09.65.7z"></path>
+        </svg>
+      </a>
+      <a href="https://wa.me/qr/NKKBA25W5F6ZB1" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.272-.099-.47-.148-.669.15-.198.297-.767.967-.94 1.16-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.058-.173-.297-.018-.457.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.496.099-.198.05-.372-.025-.521-.074-.149-.669-1.613-.916-2.209-.242-.579-.487-.501-.669-.51-.173-.008-.372-.01-.571-.01a1.099 1.099 0 0 0-.8.372c-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.066 2.875 1.216 3.076.149.198 2.102 3.212 5.096 4.38.713.307 1.269.491 1.703.629.715.229 1.367.197 1.881.12.575-.085 1.758-.719 2.006-1.412.248-.694.248-1.289.173-1.412-.074-.124-.272-.198-.57-.347z"></path></svg>
+    </div>
+    <div class="footer-copyright">
+      &copy; جميع الحقوق محفوظة <span id="copyYear"></span> | Developer: Rahim Vico
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById('copyYear').textContent = new Date().getFullYear();
+</script>
+    </html>
